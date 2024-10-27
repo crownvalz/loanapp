@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Secure Passport Photo Crop Tool</title>
+    <title>Passport Photo AI</title>
     <meta content="A modern and secure passport photo cropping tool." name="description">
     <meta content="passport, photo, crop, secure, tool" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="assets/img/tree.png" rel="icon">
+    <link href="assets/img/tree.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -209,7 +209,7 @@
             }
 
             doc.setFontSize(10);
-            doc.text("© 2024 Secure Passport Photo Tool. All Rights Reserved.", docWidth / 2, docHeight - 10, null, null, 'center');
+            doc.text("© 2024 Secure Passport Photo Tool by Mono. All Rights Reserved.", docWidth / 2, docHeight - 10, null, null, 'center');
 
             const fileName = document.getElementById("nameField").value || "passport_photos";
             doc.save(`${fileName}.pdf`);

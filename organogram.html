@@ -23,76 +23,80 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-        }
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f2f2f2; /* Light gray background */
+      margin: 0; /* Remove default margin */
+    }
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
+    .container {
+      max-width: 900px; /* Increased max-width for better readability */
+      margin: auto;
+      padding: 20px; /* Add padding for spacing */
+    }
 
-        /* Modal Styles */
-        .modal-dialog {
-            max-width: 900px; 
-            width: 100%;
-        }
+    /* Modal Styles */
+    .modal-dialog {
+      max-width: 800px; /* Adjusted width for the modal */
+      width: 100%;
+    }
 
-        .modal-body {
-            max-height: 600px; 
-            overflow-y: auto; 
-        }
+    .modal-body {
+      max-height: 600px;
+      overflow-y: auto;
+    }
 
-        #imageToCrop {
-            max-width: 100%; 
-            max-height: 500px; 
-            display: none; 
-        }
+    #imageToCrop {
+      max-width: 100%;
+      max-height: 500px;
+      display: none;
+    }
 
-        .preview-container {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    .preview-container {
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px; /* Added margin for spacing */
+    }
 
-        .btn-custom {
-            background-color: #007bff;
-            border: none;
-        }
+    .btn-custom {
+      background-color: #6c757d; /* Rich gray color */
+      border: none;
+      color: #ffffff; /* White text for contrast */
+    }
 
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
+    .btn-custom:hover {
+      background-color: #5a6268; /* Darker gray on hover */
+    }
 
-        footer {
-            margin-top: 20px;
-            text-align: center;
-            color: #6c757d;
-        }
-    </style>
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #6c757d;
+    }
+  </style>
 </head>
 
 <body>
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top ">
+  <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center justify-content-between">
       <h1 class="logo"><a href="index.php">Crowncalz</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
-          <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+          <li><a class="nav-link scrollto" href="#portfolio">Portfolio</a></li>
+          <li class="dropdown">
+            <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+              <li class="dropdown">
+                <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
                   <li><a href="#">Deep Drop Down 1</a></li>
                   <li><a href="#">Deep Drop Down 2</a></li>
@@ -116,151 +120,123 @@
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center">
-
     <div class="container d-flex flex-column align-items-center py-5">
-        <button type="button" class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#cropModal">
-            Upload & Crop Photo
-        </button>
+      <button type="button" class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#cropModal">
+        Upload & Crop Photo
+      </button>
 
-        <!-- Crop Modal -->
-        <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="cropModalLabel">Crop Your Photo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <input type="file" class="form-control" id="imageUpload" accept="image/*" required>
-                        <small class="form-text text-muted">Upload a clear photo for best results.</small>
-                        <div class="mt-3 d-flex justify-content-center">
-                            <img id="imageToCrop" src="" alt="To Crop">
-                        </div>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <button type="button" class="btn btn-secondary" onclick="applyCrop()" data-bs-dismiss="modal">Crop & Save</button>
-                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
+      <!-- Crop Modal -->
+      <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="cropModalLabel">Crop Your Photo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-
-        <!-- Form for PDF generation and cropped image preview -->
-        <div class="mt-5 text-center preview-container" id="previewContainer" style="display: none;">
-            <h5>Cropped Image Preview</h5>
-            <img id="croppedImagePreview" src="" alt="Cropped Preview" class="mb-3 img-fluid" style="max-width: 100%;">
-            <div class="d-flex justify-content-center">
-                <button class="btn btn-secondary mb-3" onclick="recropImage()">Crop Again</button>
+            <div class="modal-body text-center">
+              <input type="file" class="form-control" id="imageUpload" accept="image/*" required>
+              <small class="form-text text-muted">Upload a clear photo for best results.</small>
+              <div class="mt-3 d-flex justify-content-center">
+                <img id="imageToCrop" src="" alt="To Crop">
+              </div>
             </div>
-            <form id="photoForm" class="text-center">
-                <div class="form-group">
-                    <label for="nameField">Name (Optional)</label>
-                    <input type="text" class="form-control text-center" id="nameField" placeholder="Enter a name for the PDF file">
-                </div>
-                <div class="form-group mt-3">
-                    <label for="photoCount">Number of Photos</label>
-                    <input type="number" class="form-control text-center" id="photoCount" value="1" min="1" max="20" required>
-                </div>
-                <button type="button" class="btn btn-custom mt-3 w-100" onclick="generatePDF()" id="generateBtn">Generate PDF</button>
-            </form>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary" onclick="applyCrop()" data-bs-dismiss="modal">Crop & Save</button>
+              <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+            </div>
+          </div>
         </div>
+      </div>
 
+      <!-- Form for PDF generation and cropped image preview -->
+      <div class="mt-5 text-center preview-container" id="previewContainer" style="display: none;">
+        <h5>Cropped Image Preview</h5>
+        <img id="croppedImagePreview" src="" alt="Cropped Preview" class="mb-3 img-fluid" style="max-width: 100%;">
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-secondary mb-3" onclick="recropImage()">Crop Again</button>
+        </div>
+        <form id="photoForm" class="text-center">
+          <div class="form-group">
+            <label for="nameField">Name (Optional)</label>
+            <input type="text" class="form-control text-center" id="nameField" placeholder="Enter a name for the PDF file">
+          </div>
+          <div class="form-group mt-3">
+            <label for="photoCount">Number of Photos</label>
+            <input type="number" class="form-control text-center" id="photoCount" value="1" min="1" max="20" required>
+          </div>
+          <button type="button" class="btn btn-custom mt-3 w-100" onclick="generatePDF()" id="generateBtn">Generate PDF</button>
+        </form>
+      </div>
     </div>
-
-
   </section><!-- End Hero -->
 
+  <main id="main"></main>
 
-  <main id="main">
+  <!-- JavaScript Files -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
-</main>
 
-    <!-- JavaScript Files -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script>
+  let cropper;
+  let croppedImageDataURL;
+  const imageToCrop = document.getElementById("imageToCrop");
+  const croppedImagePreview = document.getElementById("croppedImagePreview");
+  const previewContainer = document.getElementById("previewContainer");
 
-    <script>
-        let cropper;
-        let croppedImageDataURL;
-        const imageToCrop = document.getElementById("imageToCrop");
-        const croppedImagePreview = document.getElementById("croppedImagePreview");
-        const previewContainer = document.getElementById("previewContainer");
+  // Handle image upload and initialize cropper
+  document.getElementById("imageUpload").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file && file.size <= 5 * 1024 * 1024) { // Limit file size to 5 MB
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        initializeCropper(event.target.result);
+        imageToCrop.style.display = "block"; // Show image to crop
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("File too large! Please upload an image smaller than 5MB.");
+    }
+  });
 
-        // Handle image upload and initialize cropper
-        document.getElementById("imageUpload").addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (file && file.size <= 5 * 1024 * 1024) { // Limit file size to 5 MB
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    initializeCropper(event.target.result);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert("Please upload a valid image file under 5 MB.");
-            }
-        });
+  function initializeCropper(imageUrl) {
+    if (cropper) {
+      cropper.destroy();
+    }
+    imageToCrop.src = imageUrl;
+    cropper = new Cropper(imageToCrop, {
+      aspectRatio: 35 / 45, // Passport photo aspect ratio 35mm x 45mm
+      viewMode: 1,
+      autoCropArea: 1,
+      responsive: true,
+    });
+  }
 
-        function initializeCropper(imageSrc) {
-            imageToCrop.src = imageSrc;
-            imageToCrop.style.display = "block";
-            if (cropper) cropper.destroy();
-            cropper = new Cropper(imageToCrop, {
-                aspectRatio: 4 / 5,
-                scalable: true,
-                zoomable: true,
-                viewMode: 1,
-            });
-        }
+  function applyCrop() {
+    if (cropper) {
+      croppedImageDataURL = cropper.getCroppedCanvas({ width: 413, height: 531 }).toDataURL(); // 35mm x 45mm in pixels
+      croppedImagePreview.src = croppedImageDataURL;
+      previewContainer.style.display = "block"; // Show cropped image preview
+      imageToCrop.style.display = "none"; // Hide crop image
+    }
+  }
 
-        function applyCrop() {
-            const croppedCanvas = cropper.getCroppedCanvas({ width: 200, height: 250 });
-            croppedImageDataURL = croppedCanvas.toDataURL("image/jpeg");
-            croppedImagePreview.src = croppedImageDataURL;
-            previewContainer.style.display = "block";
+  function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    const nameField = document.getElementById("nameField").value.trim() || "passport_photo";
+    const photoCount = parseInt(document.getElementById("photoCount").value);
 
-            cropper.destroy();
-        }
-
-        function recropImage() {
-            initializeCropper(croppedImageDataURL);
-            const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
-            cropModal.show();
-        }
-
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('portrait', 'mm', 'a4');
-            const imgWidth = 35;
-            const imgHeight = 45;
-            const margin = 8;
-            const docWidth = 210;
-            const docHeight = 297;
-
-            const photoCount = parseInt(document.getElementById("photoCount").value);
-            let x = margin;
-            let y = margin;
-
-            for (let i = 0; i < photoCount; i++) {
-                if (y + imgHeight + margin > docHeight) {
-                    alert("Reached maximum number of images for a single A4 page.");
-                    break;
-                }
-                if (x + imgWidth + margin > docWidth) {
-                    x = margin;
-                    y += imgHeight + margin;
-                }
-                doc.addImage(croppedImageDataURL, 'JPEG', x, y, imgWidth, imgHeight);
-                x += imgWidth + margin;
-            }
-
-            doc.setFontSize(10);
-            doc.text("© 2024 Secure Passport Photo Tool. All Rights Reserved.", docWidth / 2, docHeight - 10, null, null, 'center');
-
-            const fileName = document.getElementById("nameField").value || "passport_photos";
-            doc.save(`${fileName}.pdf`);
-        }
-    </script>
+    for (let i = 0; i < photoCount; i++) {
+      pdf.addImage(croppedImageDataURL, 'PNG', 10, 10, 35, 45); // Adds the cropped image at passport size 35mm x 45mm
+      if (i < photoCount - 1) {
+        pdf.addPage(); // Add a new page for additional images
+      }
+    }
+    pdf.save(`${nameField}.pdf`);
+  }
+</script>
 </body>
 
 </html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crop and Download Passport Photos as PDF</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Cropper -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Rubik', sans-serif;
+        }
+        .preview-container, .image-container {
+            max-width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e9ecef;
+            overflow: hidden;
+            margin: auto;
+            border-radius: 8px;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Crop and Download Passport Photos as PDF</h2>
+        
+        <!-- File Input -->
+        <div class="mb-3 text-center">
+            <input type="file" id="imageUpload" accept="image/*" class="form-control w-50 mx-auto" />
+        </div>
+
+        <!-- Preview Container -->
+        <div class="preview-container">
+            <img id="preview-image" alt="Cropped Preview" />
+        </div>
+
+        <!-- Photo Count and Name Field -->
+        <div class="d-flex justify-content-center mt-3">
+            <input type="number" id="photoCount" class="form-control w-25 me-2" placeholder="Number of Photos" min="1" max="30">
+            <input type="text" id="nameField" class="form-control w-25" placeholder="Filename">
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center mt-3">
+            <button id="openModal" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#cropModal">Crop Image</button>
+            <button id="generateBtn" class="btn btn-info" onclick="generatePDF()" disabled>Download PDF</button>
+        </div>
+    </div>
+
+    <!-- Modal for Cropping -->
+    <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cropModalLabel">Crop Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="image-container">
+                        <img id="imageToCrop" alt="Image for cropping" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="applyCrop()" data-bs-dismiss="modal">Crop and Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let cropper;
+        const imageToCrop = document.getElementById("imageToCrop");
+        const previewImage = document.getElementById("preview-image");
+
+        // File input change event for uploading image
+        document.getElementById("imageUpload").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imageToCrop.src = event.target.result;
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(imageToCrop, {
+                        aspectRatio: 4 / 5,
+                        viewMode: 1,
+                    });
+                    document.getElementById("generateBtn").disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Apply cropping to the image
+        function applyCrop() {
+            const croppedCanvas = cropper.getCroppedCanvas({ width: 200, height: 250 });
+            previewImage.src = croppedCanvas.toDataURL("image/jpeg");
+            cropper.destroy();
+        }
+
+        // Generate PDF with the cropped image
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('portrait', 'mm', 'a4');
+            const imgWidth = 35;
+            const imgHeight = 45;
+            const margin = 8;
+            const docWidth = 210;
+            const docHeight = 297;
+
+            const photoCount = parseInt(document.getElementById("photoCount").value);
+            let x = margin;
+            let y = margin;
+
+            for (let i = 0; i < photoCount; i++) {
+                if (y + imgHeight + margin > docHeight) {
+                    alert("Reached maximum number of images for a single A4 page.");
+                    break;
+                }
+                if (x + imgWidth + margin > docWidth) {
+                    x = margin;
+                    y += imgHeight + margin;
+                }
+                doc.addImage(previewImage.src, 'JPEG', x, y, imgWidth, imgHeight);
+                x += imgWidth + margin;
+            }
+
+            doc.setFontSize(10);
+            doc.text("© 2024 Lifeme. All Rights Reserved.", docWidth / 2, docHeight - 10, null, null, 'center');
+
+            const fileName = document.getElementById("nameField").value || "passport_photos";
+            doc.save(`${fileName}.pdf`);
+        }
+    </script>
+</body>
+</html>
